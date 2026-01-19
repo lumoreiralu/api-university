@@ -11,60 +11,54 @@ class CourseController extends Controller
 {
 
     public function showCourses(){
-        // El 'with' hace el INNER JOIN automáticamente
+
         $courses = CourseModel::with('carrera')->get(); 
         
-        // Ahora en la vista podés acceder a: $course->nombre_materia 
-        // y al nombre de la carrera así: $course->carrera->nombre_carrera
-        return view('course.index', compact('courses'));
+        return view('course.course-list', compact('courses'));
     }
 
     public function showCourse($id) {
-        $course = CourseModel::findOrFail($id); // Si no lo encuentra, lanza un 404 automáticamente
-        return view('courses.show', compact('course'));
+        $course = CourseModel::findOrFail($id); 
+        return view('course.course-id', compact('course'));
     }
 
     public function showFormNewCourse() {
         $degrees = DegreeModel::all();
-        return view('courses.create', compact('degrees'));
+        return view('course.form-newCourse', compact('degrees'));
     }
 
     public function newCourse(Request $request) {
-        // VALIDACIÓN: Laravel lo hace por ti de forma elegante
         $request->validate([
             'nombre_materia' => 'required',
             'nombre_profesor' => 'required',
-            'id_carrera' => 'required|exists:degrees,id',
+            'id_carrera' => 'required|exists:Carrera,id_carrera',
         ]);
 
-        // INSERCIÓN: Usando Eloquent
         CourseModel::create([
             'nombre_materia' => $request->nombre_materia,
             'nombre_profesor' => $request->nombre_profesor,
             'id_carrera' => $request->id_carrera,
         ]);
 
-        // REDIRECCIÓN: Ya no usamos header() ni BASE_URL
         return redirect()->route('home')->with('success', 'Curso creado!');
     }
 
     public function deleteCourse($id) {
         CourseModel::destroy($id);
-        return back()->with('success', 'Curso eliminado');
+        return back()->with('success', 'Course deleted successfully');
     }
 
     public function formUpdateCourse($id) {
         $course = CourseModel::findOrFail($id);
         $degrees = DegreeModel::all();
-        return view('courses.edit', compact('course', 'degrees'));
+        return view('course.form-updateCourse', compact('course', 'degrees'));
     }
 
     public function updateCourse(Request $request, $id) {
         $course = CourseModel::findOrFail($id);
-        
-        // Actualizamos los datos provenientes del $request
+
         $course->update($request->all());
 
-        return redirect()->route('courses.index')->with('info', 'Curso actualizado');
+        return redirect()->route('home')->with('info', 'Course updated successfully');
     }
 }

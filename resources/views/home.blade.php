@@ -1,51 +1,41 @@
+@extends('layouts.header') 
 
-@extends('layaouts.app')
 @section('content')
 
-
-if (empty($degrees)) {
-    echo "<p class='no-data'>There is not data to display.</p>";
-    return;
-}
-
-$groupedDegrees = [];
-foreach ($degrees as $item) {
-    if (!isset($groupedDegrees[$item->nombre_carrera])) {
-        $groupedDegrees[$item->nombre_carrera] = [
-            'duracion' => $item->duracion,
-            'materias' => []
-        ];
-    }
-    $groupedDegrees[$item->nombre_carrera]['materias'][] = $item->Materia;
-}
-?>
-<table class="styled-table">
-    <thead>
-        <tr>
-            <th>Degree</th>
-            <th>Courses</th>
-            <th>Duration</th>
-        </tr>
-    </thead>
-    <tbody>
-        foreach ($groupedDegrees as $nombreCarrera => $datos): 
-            <tr>
-                <td class="degree-name">
-                    <strong>$nombreCarrera;</strong>
-                </td>
-                <td>
-                    <ul class="courses-list">
-                        foreach ($datos['materias'] as $materia): 
-                            <li> $materia; </li>
-                         endforeach; 
-                    </ul>
-                </td>
-                <td>
-                   <strong>  echo $datos['duracion'] . ' years';  </strong>
-                </td>
-            </tr>
-         endforeach;
-    </tbody>
-</table>
+<main class="container">
+    @if($degrees->isEmpty()) 
+        <p class='no-data'>There is no data to display.</p>
+    @else
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Degree</th>
+                    <th>Courses</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($degrees as $degree) 
+                    <tr>
+                        <td class="degree-name">
+                            <strong>{{ $degree->nombre_carrera }}</strong>
+                        </td>
+                        <td>
+                            <ul class="courses-list">
+                                {{-- 'materias' es la relación definida en el modelo --}}
+                                @foreach ($degree->materias as $materia) 
+                                    <li>{{ $materia->nombre_materia }}</li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        <td>
+                           <strong>{{ $degree->duracion }} years</strong>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
+</main>
 
 @endsection

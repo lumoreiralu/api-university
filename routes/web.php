@@ -7,11 +7,11 @@ use App\Http\Controllers\UserController;
 
 
 // --- SECCIÓN PÚBLICA ---
-Route::get('/', [DegreeController::class, 'showHome']); // Home
-Route::get('/home', [DegreeController::class, 'showHome']);
+Route::get('/', [DegreeController::class, 'showHome'])->name('home'); // Home
+Route::get('/home', [DegreeController::class, 'showHome'])->name('home');
 
 Route::get('/degrees', [DegreeController::class, 'showDegrees']);
-Route::get('/degree/{id}', [DegreeController::class, 'showDegree']); // {id} reemplaza a $params[1]
+Route::get('/degree/{id}', [DegreeController::class, 'showDegree']); 
 
 Route::get('/courses', [CourseController::class, 'showCourses']);
 Route::get('/course/{id}', [CourseController::class, 'showCourse']);
@@ -19,23 +19,23 @@ Route::get('/course/{id}', [CourseController::class, 'showCourse']);
 Route::get('/showLogin', [UserController::class, 'showLogin'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
 
-// --- SECCIÓN PROTEGIDA (Tus Middlewares) ---
-// En Laravel, en lugar de llamar al middleware en cada case, los agrupas:
+// --- SECCIÓN PROTEGIDA (Middlewares) ---
+
 Route::middleware(['auth'])->group(function () {
     
     // Carreras (Degrees)
     Route::get('/formNewDegree', [DegreeController::class, 'showFormNewDegree']);
-    Route::post('/newDegree', [DegreeController::class, 'newDegree']);
+    Route::post('/newDegree', [DegreeController::class, 'newDegree'])->name('degrees.store');
     Route::get('/formUpdateDegree/{id}', [DegreeController::class, 'formUpdateDegree']);
     Route::post('/updateDegree/{id}', [DegreeController::class, 'updateDegree']);
-    Route::get('/deleteDegree/{id}', [DegreeController::class, 'deleteDegree']);
+    Route::delete('/deleteDegree/{id}', [DegreeController::class, 'deleteDegree']);
 
     // Cursos (Courses)
     Route::get('/formNewCourse', [CourseController::class, 'showFormNewCourse']);
-    Route::post('/newCourse', [CourseController::class, 'newCourse']);
+    Route::post('/newCourse', [CourseController::class, 'newCourse'])->name('courses.store');
     Route::get('/formUpdateCourse/{id}', [CourseController::class, 'formUpdateCourse']);
     Route::post('/updateCourse/{id}', [CourseController::class, 'updateCourse']);
-    Route::get('/deleteCourse/{id}', [CourseController::class, 'deleteCourse']);
+    Route::delete('/deleteCourse/{id}', [CourseController::class, 'deleteCourse']);
 
     Route::get('/logout', [UserController::class, 'logout']);
 });

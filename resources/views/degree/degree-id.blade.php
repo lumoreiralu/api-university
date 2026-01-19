@@ -1,28 +1,26 @@
-@extends('layaouts.header')
+@extends('layouts.header')
 @section('content')
 
 <main class="main-content">
     <section class="form-card" style="max-width: 600px;">
         <header class="form-header">
-            <h1><?php echo $degree->nombre_carrera; ?></h1>
-            <p><strong>Duration:</strong> <?php echo $degree->duracion; ?></p>
+            <h1>Details of: {{ $degree->nombre_carrera }}</h1>
+            <p><strong>Duration:</strong> {{$degree->duracion}} years</p>
         </header>
 
         <div class="courses-section">
-            <h3>Courses:</h3>
-            <?php if (!empty($courses)): ?>
-                <ul class="courses-list">
-                    <?php foreach ($courses as $course): ?>
-                        <li><?php echo $course->nombre_materia; ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php else: ?>
-                <p>No courses registered for this degree.</p>
-            <?php endif; ?>
+            <h3>Courses included:</h3>
+            <ul>
+                @forelse ($degree->materias as $materia)
+                    <li>{{ $materia->nombre_materia }} - Profesor: {{ $materia->nombre_profesor }}</li>
+                @empty
+                    <li>No courses registered for this degree yet.</li>
+                @endforelse
+            </ul>
         </div>
 
         <div style="margin-top: 20px;">
-            <a href="home" style="text-decoration: none; color: #98b1ad;">← Volver al listado</a>
+            <a href="{{ url('/degrees') }}" style="text-decoration: none; color: #98b1ad;">← Back to list</a>
         </div>
     </section>
 </main>

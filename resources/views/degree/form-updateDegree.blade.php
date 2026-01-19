@@ -1,4 +1,4 @@
-@extends('layaouts.header')
+@extends('layouts.header')
 @section('content')
 
 <main class="page-content">
@@ -10,6 +10,7 @@
             </header>
 
             <form action="newDegree" method="POST">
+                @csrf
                 <div class="input-group">
                     <label for="nombre_carrera">Degree Name</label>
                     <input type="text" id="nombre_carrera" name="nombre_carrera" placeholder="e.g. Software Engineering" required>

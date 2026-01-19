@@ -19,8 +19,8 @@
         <li> <div class="dropdown">
                 <button class="dropbtn">Menu</button>
                 <div class="dropdown-content">
-                <a href="{{ url('formNewCourse') }}">New Course</a>
-                <a href="{{ url('formNewDegree') }}">New Degree</a>
+                <a href="{{ url('/formNewCourse') }}">New Course</a>
+                <a href="{{ url('/formNewDegree') }}">New Degree</a>
                 </div>
             </div>
         </li>

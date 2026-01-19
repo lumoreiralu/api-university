@@ -1,4 +1,4 @@
-@extends('layouts.header') {{-- Asegúrate que la carpeta sea 'layouts' y no 'layaouts' --}}
+@extends('layouts.header') 
 @section('content')
 
 <main class="container-list">
@@ -17,7 +17,6 @@
                 <article class="degree-card">
                     <div class="card-icon">🎓</div>
                     <div class="card-content">
-                        {{-- Laravel usa objetos, así que $degree->nombre_carrera es perfecto --}}
                         <h3>{{ $degree->nombre_carrera }}</h3>
                         <p class="duration-badge">
                             <span>Duration:</span> {{ $degree->duracion }}
@@ -25,7 +24,6 @@
                     </div>
                     <div class="card-footer">
                         <div class="actions-group">
-                            {{-- Usamos url() para generar rutas absolutas correctas --}}
                             <a href="{{ url('degree/' . $degree->id_carrera) }}" class="btn-action" title="Ver detalles">
                                 <span>👁️</span> Details
                             </a>
@@ -35,7 +33,7 @@
                             </a>
                             
                             <a href="{{ url('deleteDegree/' . $degree->id_carrera) }}" class="btn-action" 
-                               onclick="return confirm('¿Estás seguro?');" title="Eliminar">
+                               onclick="return confirm('¿Are you sure?');" title="DELETE">
                                 <span>🗑️</span> Delete
                             </a>
                         </div>
